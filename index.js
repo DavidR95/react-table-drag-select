@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
 import clone from "clone";
-import PropTypes from "prop-types";
 
 export default class TableDragSelect extends React.Component {
   static propTypes = {
@@ -19,11 +19,11 @@ export default class TableDragSelect extends React.Component {
         if (!Array.isArray(row) || row.length !== columnCount) {
           return error;
         }
-        for (const cell of row) {
-          if (typeof cell !== "boolean") {
-            return error;
-          }
-        }
+        // for (const cell of row) {
+        //   if (typeof cell !== "boolean") {
+        //     return error;
+        //   }
+        // }
       }
     },
     maxRows: PropTypes.number,
@@ -105,7 +105,9 @@ export default class TableDragSelect extends React.Component {
               key={j}
               onTouchStart={this.handleTouchStartCell}
               onTouchMove={this.handleTouchMoveCell}
-              selected={this.props.value[i][j]}
+              selected={this.props.value[i][j].isSelected}
+              color={this.props.value[i][j].color}
+              availability={this.props.value[i][j].availability}
               beingSelected={this.isCellBeingSelected(i, j)}
               {...cell.props}
             >
