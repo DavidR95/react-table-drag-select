@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
 import React from "react";
 import clone from "clone";
+import PropTypes from "prop-types";
 
 export default class TableDragSelect extends React.Component {
   static propTypes = {
@@ -55,8 +55,7 @@ export default class TableDragSelect extends React.Component {
           }
         }
       }
-    },
-    horizontalHeaders: PropTypes.object
+    }
   };
 
   static defaultProps = {
@@ -90,19 +89,12 @@ export default class TableDragSelect extends React.Component {
   render = () => {
     return (
       <table className="table-drag-select">
-        <thead>
-          {this.renderHorizontalHeaders()}
-        </thead>
         <tbody>
           {this.renderRows()}
         </tbody>
       </table>
     );
   };
-
-  renderHorizontalHeaders() {
-    return this.props.horizontalHeaders;
-  }
 
   renderRows = () =>
     React.Children.map(this.props.children, (tr, i) => {
