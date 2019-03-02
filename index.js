@@ -19,11 +19,11 @@ export default class TableDragSelect extends React.Component {
         if (!Array.isArray(row) || row.length !== columnCount) {
           return error;
         }
-        // for (const cell of row) {
-        //   if (typeof cell !== "boolean") {
-        //     return error;
-        //   }
-        // }
+        for (const cell of row) {
+          if (typeof cell.isSelected !== "boolean") {
+            return error;
+          }
+        }
       }
     },
     maxRows: PropTypes.number,
@@ -131,7 +131,7 @@ export default class TableDragSelect extends React.Component {
         startColumn: column,
         endRow: row,
         endColumn: column,
-        addMode: !this.props.value[row][column]
+        addMode: !this.props.value[row][column].isSelected
       });
     }
   };
@@ -180,7 +180,10 @@ export default class TableDragSelect extends React.Component {
           this.state.endColumn
         );
         for (let column = minColumn; column <= maxColumn; column++) {
-          value[row][column] = this.state.addMode;
+          value[row][column] = {
+            ...value[row][column],
+            isSelected: this.state.addMode
+          };
         }
       }
       this.setState({ selectionStarted: false });
