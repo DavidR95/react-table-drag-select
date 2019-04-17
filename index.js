@@ -107,7 +107,7 @@ export default class TableDragSelect extends React.Component {
               onTouchMove={this.handleTouchMoveCell}
               selected={this.props.value[i][j].isSelected}
               color={this.props.value[i][j].color}
-              availability={this.props.value[i][j].availability}
+              activity={this.props.value[i][j].activity}
               beingSelected={this.isCellBeingSelected(i, j)}
               {...cell.props}
             >
