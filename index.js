@@ -4,6 +4,7 @@ import clone from "clone";
 
 export default class TableDragSelect extends React.Component {
   static propTypes = {
+    userId: PropTypes.number,
     value: props => {
       const error = new Error(
         "Invalid prop `value` supplied to `TableDragSelect`. Validation failed."
@@ -29,7 +30,7 @@ export default class TableDragSelect extends React.Component {
     maxRows: PropTypes.number,
     maxColumns: PropTypes.number,
     onSelectionStart: PropTypes.func,
-    onInput: PropTypes.func,
+    setNextActivity: PropTypes.func,
     onChange: PropTypes.func,
     children: props => {
       if (TableDragSelect.propTypes.value(props)) {
@@ -59,11 +60,12 @@ export default class TableDragSelect extends React.Component {
   };
 
   static defaultProps = {
+    userId: null,
     value: [],
     maxRows: Infinity,
     maxColumns: Infinity,
     onSelectionStart: () => {},
-    onInput: () => {},
+    setNextActivity: () => {},
     onChange: () => {}
   };
 
@@ -164,9 +166,12 @@ export default class TableDragSelect extends React.Component {
   };
 
   handleTouchEndWindow = e => {
+    const { userId } = this.props;
+
     const isLeftClick = e.button === 0;
     const isTouch = e.type !== "mousedown";
     if (this.state.selectionStarted && (isLeftClick || isTouch)) {
+      const nextActivity = this.props.setNextActivity();
       const value = clone(this.props.value);
       const minRow = Math.min(this.state.startRow, this.state.endRow);
       const maxRow = Math.max(this.state.startRow, this.state.endRow);
@@ -182,7 +187,11 @@ export default class TableDragSelect extends React.Component {
         for (let column = minColumn; column <= maxColumn; column++) {
           value[row][column] = {
             ...value[row][column],
-            isSelected: this.state.addMode
+            isSelected: this.state.addMode,
+            activity: {
+              ...value[row][column].activity,
+              [userId]: nextActivity
+            }
           };
         }
       }
