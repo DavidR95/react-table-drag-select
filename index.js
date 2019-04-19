@@ -109,6 +109,7 @@ export default class TableDragSelect extends React.Component {
               onTouchMove={this.handleTouchMoveCell}
               selected={this.props.value[i][j].isSelected}
               color={this.props.value[i][j].color}
+              userid={this.props.userId}
               activity={this.props.value[i][j].activity}
               beingSelected={this.isCellBeingSelected(i, j)}
               {...cell.props}
@@ -275,7 +276,9 @@ class Cell extends React.Component {
         onMouseMove={this.handleTouchMove}
         {...props}
       >
-        {this.props.children || <span>&nbsp;</span>}
+        {this.props.children ||
+          this.props.activity[this.props.userid] ||
+          <span>&nbsp;</span>}
       </td>
     );
   };
