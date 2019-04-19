@@ -171,7 +171,10 @@ export default class TableDragSelect extends React.Component {
     const isLeftClick = e.button === 0;
     const isTouch = e.type !== "mousedown";
     if (this.state.selectionStarted && (isLeftClick || isTouch)) {
-      const nextActivity = this.props.setNextActivity();
+      let nextActivity = null;
+      if (this.state.addMode) {
+        nextActivity = this.props.setNextActivity();
+      }
       const value = clone(this.props.value);
       const minRow = Math.min(this.state.startRow, this.state.endRow);
       const maxRow = Math.max(this.state.startRow, this.state.endRow);
@@ -193,6 +196,10 @@ export default class TableDragSelect extends React.Component {
               [userId]: nextActivity
             }
           };
+
+          if (!this.state.addMode) {
+            delete value[row][column].activity[userId];
+          }
         }
       }
       this.setState({ selectionStarted: false });
